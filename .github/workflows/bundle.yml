@@ -13,5 +13,5 @@ jobs:
       - name: Deploy file to https://agabov123.github.io/Fst-etl-test/package.json
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GIT_TOKEN }}
           publish_dir: package.json

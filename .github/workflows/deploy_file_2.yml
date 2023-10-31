@@ -1,4 +1,4 @@
-name: Create GitHub Pages
+name: Deploy File1 Content
 
 on:
   workflow_dispatch:
@@ -11,8 +11,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Deploy file to GitHub Pages
+      - name: Generate Content2
+        run: ./file2.sh
+
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GIT_TOKEN }}
-          publish_dir: ./files/
+          publish_dir: files
+          commit_message: "Publish to GitHub Pages"

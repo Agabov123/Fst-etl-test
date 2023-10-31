@@ -16,8 +16,7 @@ jobs:
 
       - name: Create Results Directory
         run: |
-          mkdir results
-          echo "<html><body>" > results/index.html
+          echo "<html><body>" >> results/index.html
           echo "<h1>Comparison Results</h1>" >> results/index.html
           reference_state=$(cat reference_state.txt)
           current_state=$(cat package.json)

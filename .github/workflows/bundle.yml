@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
       - name: Compare states
         id: compare_states
         run: |
@@ -26,15 +26,18 @@ jobs:
           echo "$current_state"
 
           if [ "$reference_state" != "$current_state" ]; then
-            echo "Change detected"
-            exit 1
+            echo "FIle modified"
+
           else
-            echo "No change detected"
+            echo "File not modified"
           fi
 
-      - name: Deploy file to GitHub Pages
-        if: steps.compare_states.outputs.compare_states == 'Change detected'
+      - name: Deploy Workflow Result to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: package.json
+          publish_dir: ./
+          publish_branch: main
+          publish_repo: ${{ github.repository }}
+          commit_message: "Publish Workflow Result"
+

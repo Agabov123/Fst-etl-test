@@ -1,4 +1,4 @@
-name: Check and Deploy Bundles
+name: Detect change in file version
 
 on:
   push:
@@ -13,14 +13,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Debug - List Files in Current Directory
+        run: ls
+
+      - name: Debug - Show Current Working Directory
+        run: pwd
+
       - name: Check if file version has changed
         run: |
+          # Debug: List the files in the current directory
+          ls
+          
+          # Debug: Show the current working directory
+          pwd
+          
           # Capture the current version of the file
           current_version=$(cat package.json)
-
+          
+          # Debug: Show the current version
+          echo "Current version: $current_version"
+          
           # Compare the current version with the previous version (if available)
           previous_version=$(cat package.json.previous 2>/dev/null)
-
+          
+          # Debug: Show the previous version
+          echo "Previous version: $previous_version"
+          
           # Check if the versions are different
           if [ "$current_version" != "$previous_version" ]; then
             echo "Change detected"
@@ -37,4 +55,3 @@ jobs:
         with:
           github_token: ${{ secrets.GIT_TOKEN }}
           publish_dir: package.json
-

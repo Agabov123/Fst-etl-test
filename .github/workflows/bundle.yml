@@ -14,22 +14,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Compare states
-        id: compare_states
+      - name: Create Results Directory and File
         run: |
+          mkdir results
+          echo "<html><body>" > results/results.html
+          echo "<h1>Comparison Results</h1>" >> results/results.html
           reference_state=$(cat reference_state.txt)
           current_state=$(cat package.json)
-
-          echo "Reference state:"
-          echo "$reference_state"
-          echo "Current state:"
-          echo "$current_state"
-
+          
           if [ "$reference_state" != "$current_state" ]; then
-            echo "File has been modified"
+            echo "<p>File has been modified</p>" >> results/results.html
           else
-            echo "File has not been modified"
-          fi > results.html
+            echo "<p>File has not been modified</p>" >> results/results.html
+          fi
+          echo "</body></html>" >> results/results.html
+
+        - name: Display Results
+          run: cat results/results.html
+
           
       - name: Deploy Logs to GitHub Pages
         if: steps.compare_states.outputs.compare_states == 'File has been modified' || steps.compare_states.outputs.compare_states == 'File has not been modified'

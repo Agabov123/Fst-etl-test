@@ -49,9 +49,9 @@ jobs:
           echo '</html>' >> logs.html
 
       - name: Deploy Logs to GitHub Pages
-        if: steps.compare_states.outputs.compare_states == 'Change detected'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
+          publish_branch: main
           commit_message: "Publish Compare States Logs"

@@ -1,22 +1,31 @@
-name: Deploy File1 Content
+name: Execute file1.sh and Display Output
 
 on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  execute:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Generate Content1
-        run: ./files/file1.sh
+      - name: Execute file1.sh
+        run: chmod +x ./files/file1.sh && ./files/file1.sh > output.txt
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GIT_TOKEN }}
-          publish_dir: files
-          commit_message: "Publish to GitHub Pages"
+          publish_dir: .
+          commit_message: "Execute file1.sh and Display Output"
+
+      - name: Display Output
+        run: |
+          echo "<html><body>" > output.html
+          echo "<h1>Output of file1.sh</h1>" >> output.html
+          echo "<pre>" >> output.html
+          cat output.txt >> output.html
+          echo "</pre>" >> output.html
+          echo "</body></html>" >> output.html

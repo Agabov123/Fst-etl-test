@@ -31,23 +31,7 @@ jobs:
           else
             echo "File has not been modified"
           fi
-
-      - name: Create HTML Page
-        run: |
-          echo '<!DOCTYPE html>' > logs.html
-          echo '<html>' >> logs.html
-          echo '<head>' >> logs.html
-          echo '    <title>Compare States Logs</title>' >> logs.html
-          echo '</head>' >> logs.html
-          echo '<body>' >> logs.html
-          echo '    <h1>Compare States Logs</h1>' >> logs.html
-          echo '    <pre>' >> logs.html
-          echo '        <!-- Paste the logs here -->' >> logs.html
-          echo "        ${{ steps.compare_states.outputs.logs }}" >> logs.html
-          echo '    </pre>' >> logs.html
-          echo '</body>' >> logs.html
-          echo '</html>' >> logs.html
-
+          
       - name: Deploy Logs to GitHub Pages
         if: steps.compare_states.outputs.compare_states == 'File has been modified' || steps.compare_states.outputs.compare_states == 'File has not been modified'
         uses: peaceiris/actions-gh-pages@v3

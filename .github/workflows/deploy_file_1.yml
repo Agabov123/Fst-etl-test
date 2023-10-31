@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Generate Content1
-        run: ./file1.sh
+        run: ./files/file1.sh
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

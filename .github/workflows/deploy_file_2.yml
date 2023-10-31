@@ -1,4 +1,4 @@
-name: Deploy File1 Content
+name: Deploy File2 Content
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Generate Content2
-        run: ./file2.sh
+        run: ./files/file2.sh
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

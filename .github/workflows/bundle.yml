@@ -33,10 +33,9 @@ jobs:
         run: cat results/results.html
 
           
-      - name: Deploy Logs to GitHub Pages
-        if: steps.compare_states.outputs.compare_states == 'File has been modified' || steps.compare_states.outputs.compare_states == 'File has not been modified'
+      - name: Deploy Results to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./results/
-          commit_message: "Publish Compare States Logs"
+          publish_dir: results
+          commit_message: "Publish Comparison Results"

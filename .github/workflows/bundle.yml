@@ -37,6 +37,8 @@ jobs:
           if [ "$reference_state" != "$current_state" ]; then
             echo "Change detected"
             exit 1
+          else
+            echo "No change detected"
           fi
 
       - name: Deploy file to GitHub Pages

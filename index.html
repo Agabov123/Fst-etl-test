@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Workflow Results</title>
+</head>
+<body>
+    <h1>Workflow Results</h1>
+    <div id="result"></div>
+
+    <script>
+
+        var changeDetected = true; 
+
+        var resultElement = document.getElementById("result");
+
+        if (changeDetected) {
+            resultElement.innerText = "Change Detected";
+        } else {
+            resultElement.innerText = "No Change";
+        }
+    </script>
+</body>
+</html>

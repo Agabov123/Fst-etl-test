@@ -28,6 +28,9 @@ jobs:
           reference_state=${{ steps.get_reference_state.outputs.reference_state }}
           current_state=${{ steps.get_current_state.outputs.current_state }}
 
+          echo "Reference state: $reference_state"
+          echo "Current state: $current_state"
+
           if [ "$(jq -n --arg reference "$reference_state" --arg current "$current_state" '$reference != $current')" != "" ]; then
             echo "Change detected"
             exit 1

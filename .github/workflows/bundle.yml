@@ -49,6 +49,7 @@ jobs:
           echo '</html>' >> logs.html
 
       - name: Deploy Logs to GitHub Pages
+        if: steps.compare_states.outputs.compare_states == 'File has been modified' || steps.compare_states.outputs.compare_states == 'File has not been modified'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

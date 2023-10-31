@@ -33,9 +33,8 @@ jobs:
         run: cat results/results.html
 
           
-      - name: Deploy Results to GitHub Pages
+      - name: Deploy Logs to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: results
-          commit_message: "Publish Comparison Results"
+          publish_dir: ./results/

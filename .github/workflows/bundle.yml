@@ -28,10 +28,11 @@ jobs:
           reference_state=${{ steps.get_reference_state.outputs.reference_state }}
           current_state=${{ steps.get_current_state.outputs.current_state }}
 
-          if [ "$(jq -n --arg reference "$reference_state" --arg current "$current_state" '$reference != $current')" == true ]; then
+          if [ "$(jq -n --arg reference "$reference_state" --arg current "$current_state" '$reference != $current')" != "" ]; then
             echo "Change detected"
             exit 1
           fi
+
 
       - name: Deploy file to GitHub Pages
         if: steps.compare_states.outputs.compare_states == 'Change detected'

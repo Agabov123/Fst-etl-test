@@ -26,10 +26,10 @@ jobs:
           echo "$current_state"
 
           if [ "$reference_state" != "$current_state" ]; then
-            echo "File has been modified" > comparison_result.txt
+            echo "File has been modified" >> comparison_result.txt
             exit 1
           else
-            echo "File has not been modified" > comparison_result.txt
+            echo "File has not been modified" >> comparison_result.txt
           fi
           
       - name: Deploy Logs to GitHub Pages

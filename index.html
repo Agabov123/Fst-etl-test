@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Workflow Result</title>
+    <title>Compare States Logs</title>
 </head>
 <body>
-    <h1>Workflow Result</h1>
-    <div id="result"></div>
-
-    <script>
-        var resultElement = document.getElementById("result");
-        
-        var workflowResult = "${{ steps.compare_states.outputs.result }}";
-        
-        resultElement.innerText = workflowResult;
-    </script>
+    <h1>Compare States Logs</h1>
+    <pre>
+        ${{ steps.compare_states.outputs.logs }}
+    </pre>
 </body>
 </html>

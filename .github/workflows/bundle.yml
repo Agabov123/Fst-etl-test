@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
       - name: Compare states
         id: compare_states
         run: |
@@ -26,15 +26,32 @@ jobs:
           echo "$current_state"
 
           if [ "$reference_state" != "$current_state" ]; then
-            echo "File modified"
+            echo "File has been modified"
             exit 1
           else
-            echo "File not modified"
+            echo "File has not been modified"
           fi
 
-      - name: Deploy file to GitHub Pages
+      - name: Create HTML Page
+        run: |
+          echo '<!DOCTYPE html>' > logs.html
+          echo '<html>' >> logs.html
+          echo '<head>' >> logs.html
+          echo '    <title>Compare States Logs</title>' >> logs.html
+          echo '</head>' >> logs.html
+          echo '<body>' >> logs.html
+          echo '    <h1>Compare States Logs</h1>' >> logs.html
+          echo '    <pre>' >> logs.html
+          echo '        <!-- Paste the logs here -->' >> logs.html
+          echo "        ${{ steps.compare_states.outputs.logs }}" >> logs.html
+          echo '    </pre>' >> logs.html
+          echo '</body>' >> logs.html
+          echo '</html>' >> logs.html
+
+      - name: Deploy Logs to GitHub Pages
         if: steps.compare_states.outputs.compare_states == 'Change detected'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: package.json
+          publish_dir: ./
+          commit_message: "Publish Compare States Logs"

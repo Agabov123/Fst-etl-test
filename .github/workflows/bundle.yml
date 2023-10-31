@@ -29,8 +29,8 @@ jobs:
           fi
           echo "</body></html>" >> results/results.html
 
-        - name: Display Results
-          run: cat results/results.html
+      - name: Display Results
+        run: cat results/results.html
 
           
       - name: Deploy Logs to GitHub Pages

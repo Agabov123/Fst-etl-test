@@ -1,4 +1,4 @@
-name: Deploy Bundles
+name: Check and Deploy Bundles
 
 on:
   push:
@@ -10,8 +10,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy file to https://agabov123.github.io/Fst-etl-test/package.json
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Check if file version has changed
+        run: |
+          # Capture the current version of the file
+          current_version=$(cat package.json)
+
+          # Compare the current version with the previous version (if available)
+          previous_version=$(cat package.json.previous 2>/dev/null)
+
+          # Check if the versions are different
+          if [ "$current_version" != "$previous_version" ]; then
+            echo "Change detected"
+            # Update the previous version file
+            echo "$current_version" > package.json.previous
+          else
+            echo "File has not been changed"
+          fi
+        id: check_version
+
+      - name: Deploy file to GitHub Pages
+        if: steps.check_version.outputs.check_version == 'Change detected'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GIT_TOKEN }}
           publish_dir: package.json
+

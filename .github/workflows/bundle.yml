@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -14,33 +14,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Get previous modification timestamp
-        id: get_previous_timestamp
-        run: echo "::set-output name=timestamp::$(cat previous_timestamp.txt)"
+      - name: Get reference state of package.json
+        id: get_reference_state
+        run: echo "::set-output name=reference_state::$(cat reference_state.txt)"
 
-      - name: Get current modification timestamp
-        id: get_current_timestamp
-        run: echo "::set-output name=timestamp::$(stat -c %Y package.json)"
+      - name: Get current state of package.json
+        id: get_current_state
+        run: echo "::set-output name=current_state::$(cat package.json)"
 
-      - name: Check if file version has changed
+      - name: Compare states
+        id: compare_states
         run: |
-          previous_timestamp=${{ steps.get_previous_timestamp.outputs.timestamp }}
-          current_timestamp=${{ steps.get_current_timestamp.outputs.timestamp }}
+          reference_state=${{ steps.get_reference_state.outputs.reference_state }}
+          current_state=${{ steps.get_current_state.outputs.current_state }}
 
-          if [ $current_timestamp -gt $previous_timestamp ]; then
+          if [ "$(jq -n --arg reference "$reference_state" --arg current "$current_state" '$reference != $current')" == true ]; then
             echo "Change detected"
-          else
-            echo "No change detected"
+            exit 1
           fi
-        id: check_version
-
-      - name: Save current modification timestamp
-        run: |
-          echo "::set-output name=timestamp::$(stat -c %Y package.json)" > current_timestamp.txt
-          mv current_timestamp.txt previous_timestamp.txt
 
       - name: Deploy file to GitHub Pages
-        if: steps.check_version.outputs.check_version == 'Change detected'
+        if: steps.compare_states.outputs.compare_states == 'Change detected'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

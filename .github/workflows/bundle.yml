@@ -3,7 +3,7 @@ name: Detect change in file version
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   deploy:
@@ -13,45 +13,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Debug - List Files in Current Directory
-        run: ls
+      - name: Get previous modification timestamp
+        id: get_previous_timestamp
+        run: echo "::set-output name=timestamp::$(cat previous_timestamp.txt)"
 
-      - name: Debug - Show Current Working Directory
-        run: pwd
+      - name: Get current modification timestamp
+        id: get_current_timestamp
+        run: echo "::set-output name=timestamp::$(stat -c %Y package.json)"
 
       - name: Check if file version has changed
         run: |
-          # Debug: List the files in the current directory
-          ls
-          
-          # Debug: Show the current working directory
-          pwd
-          
-          # Capture the current version of the file
-          current_version=$(cat package.json)
-          
-          # Debug: Show the current version
-          echo "Current version: $current_version"
-          
-          # Compare the current version with the previous version (if available)
-          previous_version=$(cat package.json.previous 2>/dev/null)
-          
-          # Debug: Show the previous version
-          echo "Previous version: $previous_version"
-          
-          # Check if the versions are different
-          if [ "$current_version" != "$previous_version" ]; then
+          previous_timestamp=${{ steps.get_previous_timestamp.outputs.timestamp }}
+          current_timestamp=${{ steps.get_current_timestamp.outputs.timestamp }}
+
+          if [ $current_timestamp -gt $previous_timestamp ]; then
             echo "Change detected"
-            # Update the previous version file
-            echo "$current_version" > package.json.previous
           else
-            echo "File has not been changed"
+            echo "No change detected"
           fi
         id: check_version
+
+      - name: Save current modification timestamp
+        run: echo "::set-output name=timestamp::$(stat -c %Y package.json)" > current_timestamp.txt
 
       - name: Deploy file to GitHub Pages
         if: steps.check_version.outputs.check_version == 'Change detected'
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GIT_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: package.json

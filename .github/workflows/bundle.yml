@@ -26,10 +26,10 @@ jobs:
           echo "$current_state"
 
           if [ "$reference_state" != "$current_state" ]; then
-            comparison_result="File has been modified" > results.html
+            echo "File has been modified"
           else
-            comparison_result="File has not been modified" > results.html
-          fi
+            echo "File has not been modified"
+          fi > results.html
           
       - name: Deploy Logs to GitHub Pages
         if: steps.compare_states.outputs.compare_states == 'File has been modified' || steps.compare_states.outputs.compare_states == 'File has not been modified'

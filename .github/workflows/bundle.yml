@@ -26,9 +26,9 @@ jobs:
           echo "$current_state"
 
           if [ "$reference_state" != "$current_state" ]; then
-            comparison_result="File has been modified"
+            comparison_result="File has been modified" > results.html
           else
-            comparison_result="File has not been modified"
+            comparison_result="File has not been modified" > results.html
           fi
           
       - name: Deploy Logs to GitHub Pages
@@ -38,7 +38,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
           commit_message: "Publish Compare States Logs"
-
-      - name: Create result file
-        run: |
-          echo "Comparison Result: $comparison_result" > comparison_result.html

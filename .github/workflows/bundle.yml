@@ -29,6 +29,11 @@ jobs:
           reference_state=${{ steps.get_reference_state.outputs.reference_state }}
           current_state=${{ steps.get_current_state.outputs.current_state }}
 
+          echo "Reference state:"
+          echo "$reference_state"
+          echo "Current state:"
+          echo "$current_state"
+
           if [ "$reference_state" != "$current_state" ]; then
             echo "Change detected"
             exit 1

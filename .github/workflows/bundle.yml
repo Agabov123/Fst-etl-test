@@ -13,21 +13,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Get reference state of package.json
-        id: get_reference_state
-        run: cat reference_state.txt
-        continue-on-error: true
-
-      - name: Get current state of package.json
-        id: get_current_state
-        run: cat package.json
-
+        
       - name: Compare states
         id: compare_states
         run: |
-          reference_state=${{ steps.get_reference_state.outputs.reference_state }}
-          current_state=${{ steps.get_current_state.outputs.current_state }}
+          reference_state=$(cat reference_state.txt)
+          current_state=$(cat package.json)
 
           echo "Reference state:"
           echo "$reference_state"

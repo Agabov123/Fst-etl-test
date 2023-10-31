@@ -14,27 +14,28 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Create Results Directory and File
+      - name: Create Results Directory
         run: |
           mkdir results
-          echo "<html><body>" > results/results.html
-          echo "<h1>Comparison Results</h1>" >> results/results.html
+          echo "<html><body>" > results/index.html
+          echo "<h1>Comparison Results</h1>" >> results/index.html
           reference_state=$(cat reference_state.txt)
           current_state=$(cat package.json)
           
           if [ "$reference_state" != "$current_state" ]; then
-            echo "<p>File has been modified</p>" >> results/results.html
+            echo "<p>File has been modified</p>" >> results/index.html
           else
-            echo "<p>File has not been modified</p>" >> results/results.html
+            echo "<p>File has not been modified</p>" >> results/index.html
           fi
-          echo "</body></html>" >> results/results.html
+          echo "</body></html>" >> results/index.html
 
       - name: Display Results
-        run: cat results/results.html
-  
+        run: cat results/index.html
+
       - name: Deploy Results to GitHub Pages
         if: steps.compare_states.outputs.compare_states == 'File has been modified' || steps.compare_states.outputs.compare_states == 'File has not been modified'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./results/
+          publish_dir: results
+          commit_message: "Publish Comparison Results"

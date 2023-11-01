@@ -12,8 +12,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Execute file1.sh
-        run: chmod +x ./files/file1.sh && ./files/file1.sh > output.txt
-
+        run: cat ./files/file1.sh > script.sh
+        
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -26,6 +26,7 @@ jobs:
           echo "<html><body>" > output.html
           echo "<h1>Output of file1.sh</h1>" >> output.html
           echo "<pre>" >> output.html
-          cat output.txt >> output.html
+          cat script.sh >> output.html
           echo "</pre>" >> output.html
           echo "</body></html>" >> output.html
+

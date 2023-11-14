@@ -13,7 +13,6 @@ jobs:
 
       - name: Execute file1.sh
         run: cat ./files/file1.sh > script.sh
-             cat script.sh
         
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

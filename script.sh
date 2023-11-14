@@ -1,1 +1,1 @@
-echo "Evil script"
+echo "Good script"

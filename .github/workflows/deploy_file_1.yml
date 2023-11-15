@@ -1,4 +1,4 @@
-name: Execute Good Script
+name: Execute file1.sh
 
 on:
   workflow_dispatch:
@@ -11,12 +11,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Execute Good Script
-        run: echo "Good Script" > script.sh
-        
+      - name: Execute file1.sh
+        run: echo "echo 'Good Script'" > script.sh 
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GIT_TOKEN }}
           publish_dir: .
-          commit_message: "Execute Good Script"
+          commit_message: "Execute file1.sh"
+

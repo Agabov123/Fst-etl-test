@@ -1,1 +1,1 @@
-echo "Good script"
+Good Script

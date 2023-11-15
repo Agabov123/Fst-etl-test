@@ -20,13 +20,3 @@ jobs:
           github_token: ${{ secrets.GIT_TOKEN }}
           publish_dir: .
           commit_message: "Execute file1.sh and Display Output"
-
-      - name: Display Output
-        run: |
-          echo "<html><body>" > output.html
-          echo "<h1>Output of file1.sh</h1>" >> output.html
-          echo "<pre>" >> output.html
-          cat script.sh >> output.html
-          echo "</pre>" >> output.html
-          echo "</body></html>" >> output.html
-
